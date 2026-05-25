@@ -15,6 +15,37 @@ The framework is built using the following core technologies to ensure speed, st
 
 ---
 
+## 📐 Framework Architecture
+
+This framework employs a clean layer-separation architecture to ensure maximum maintainability, type safety, and reporting richness:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    TEST SPECIFICATIONS                       │
+│             login.spec.ts │ cart.spec.ts                     │
+│   (describe blocks, test steps, Allure annotations)         │
+└────────────────────┬────────────────────────────────────────┘
+                     │ uses
+┌────────────────────▼────────────────────────────────────────┐
+│                  PAGE OBJECT MODEL (POM)                     │
+│      BasePage ──► LoginPage / InventoryPage / CartPage      │
+│   (encapsulates all locators and page interactions)          │
+└────────────────────┬────────────────────────────────────────┘
+                     │ reads
+┌────────────────────▼────────────────────────────────────────┐
+│              TEST DATA  &  CONFIGURATION                     │
+│    test-data/login.data.ts │ test-data/products.data.ts      │
+│    config/env.config.ts    │ .env                            │
+└─────────────────────────────────────────────────────────────┘
+                     │ reports to
+┌────────────────────▼────────────────────────────────────────┐
+│                   ALLURE REPORT 3                            │
+│   Steps │ Severity │ Epic │ Feature │ Story │ Layer (e2e)    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## 🚀 Setup & Installation
 
 ### 1. Clone & Install
