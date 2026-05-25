@@ -326,6 +326,38 @@ To manually test the pipeline without waiting for a commit push:
 3.  Open the active build's **Console Output** to verify:
     *   Code is successfully checked out from the `qa` branch.
     *   The `playwright` noble Docker container is pulled.
-    *   Dependencies are installed using `npm ci`.
+    *   Dependencies are installed using `npm ci --legacy-peer-deps`.
     *   Playwright tests execute inside the container agent.
-    *   Allure reports are compiled and published.
+    *   Allure reports are compiled and published successfully.
+
+---
+
+## 🛠️ Troubleshooting & Team Tips
+
+Here are the most common pitfalls and solutions for team members setting up the CI/CD pipeline locally:
+
+### 🔑 1. I skipped setting up an Admin account, and now I'm locked out!
+If you click **"Skip and continue as admin"** during the Jenkins setup, Jenkins automatically creates a default administrator profile:
+* **Username**: `admin`
+* **Password**: Your initial admin password (retrieve it via `docker logs jenkins-ci`).
+
+If you are completely locked out, you can temporarily disable security to reset your credentials:
+1. Run: `docker exec -it jenkins-ci sed -i 's/<useSecurity>true<\/useSecurity>/<useSecurity>false<\/useSecurity>/g' /var/jenkins_home/config.xml`
+2. Run: `docker restart jenkins-ci`
+3. Access `http://localhost:8080` without a password, set your new password in **Manage Jenkins ➔ Users**, and then run:
+4. `docker exec -it jenkins-ci sed -i 's/<useSecurity>false<\/useSecurity>/<useSecurity>true<\/useSecurity>/g' /var/jenkins_home/config.xml`
+5. Run: `docker restart jenkins-ci` to turn security back on!
+
+### 🐳 2. Playwright says: "Executable doesn't exist... Please update docker image"
+Playwright strictly requires the version of the `@playwright/test` npm package in `package.json` to **exactly match the browser binaries inside the running Docker container**.
+* **Rule**: If you upgrade Playwright in `package.json` (e.g., to `1.60.0`), you **must** update the Docker image tag in the **`Jenkinsfile`** to match (e.g., change `v1.49.1-noble` to `v1.60.0-noble`).
+* **Tip**: We have locked the local devDependency in `package.json` to exactly `"1.49.1"` to prevent unintended upgrades from breaking your builds in the future.
+
+### 📦 3. Strict peer dependency conflicts (`ERESOLVE`) on `npm install`
+Because some reporting packages (like Allure) declare different Playwright peer versions, modern npm versions might throw peer conflicts.
+* **Solution**: Always use the `--legacy-peer-deps` flag:
+  ```bash
+  npm install --legacy-peer-deps
+  ```
+  The pipeline is preconfigured to use `npm ci --legacy-peer-deps` to guarantee clean, error-free builds!
+
