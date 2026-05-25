@@ -246,6 +246,12 @@ For the pipeline to execute, ensure the following plugins are installed under **
 ### 🚀 2. Spin Up Jenkins in 1-Click
 We provide a preconfigured docker-compose file that mounts the host's Docker socket to authorize containerized agents.
 
+> [!IMPORTANT]
+> **Prerequisite — Docker Engine Running**: Ensure that the Docker daemon (Docker Desktop) is running on your host machine before attempting to spin up Jenkins. 
+> * **On macOS**: Press `Cmd + Space`, search for **Docker Desktop**, and launch it. Wait until the status bar whale icon turns solid green (**"Running"**).
+> * **On Windows**: Open **Docker Desktop** from the Start Menu.
+> * **On Linux**: Ensure the systemd service is active: `sudo systemctl start docker`.
+
 #### Start the Jenkins Server:
 ```bash
 docker compose up -d --build
