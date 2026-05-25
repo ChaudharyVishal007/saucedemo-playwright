@@ -208,9 +208,10 @@ The suite encompasses **25 complete E2E test scenarios** covering every core cus
 
 ### 🛒 2. Shopping Cart Suite (`tests/cart.spec.ts`) — 12 Tests
 *   **Product Addition Flows**:
-    *   Adding a single item increments the shopping cart badge count to `1`.
-    *   Adding multiple items sequentially increments the badge indicator accurately.
-    *   Toggling "Add to cart" changes the item button style to a "Remove" button immediately.
+    *   Add single product to cart.
+    *   Add multiple products to the cart.
+    *   Cart badge updates correctly
+    *   “Add to cart” button changes to “Remove”
 *   **Cart Inventory Validation**:
     *   Successful navigation validation (URL, headers) to the shopping cart page.
     *   Validation that product names, specific description details, and prices on the cart screen exactly match the selected inventory catalogs.
