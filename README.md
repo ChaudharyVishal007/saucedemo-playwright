@@ -41,7 +41,7 @@ cp .env.example .env
 
 ## 🏃 How to Run Tests
 
-All tests run in **headless parallel mode** by default across Chrome and Firefox.
+All tests run in **headless parallel mode** by default on Google Chrome (Chromium).
 
 | Command | Description |
 |---|---|
