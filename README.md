@@ -104,11 +104,16 @@ Ensure you have the following installed locally:
 *   **Java**: v8 or higher (required by the Allure CLI to generate HTML reports locally)
 
 ### 🔧 1. Clone & Install Dependencies
-Clone the repository and run `npm install`:
+Clone the **`qa`** branch of the repository (which contains the CI/CD and Allure 3 configurations) and run `npm install`:
 ```bash
-git clone https://github.com/ChaudharyVishal007/saucedemo-playwright.git
+# Clone the 'qa' branch directly
+git clone -b qa https://github.com/ChaudharyVishal007/saucedemo-playwright.git
+
+# Navigate into the folder
 cd saucedemo-playwright
-npm install
+
+# Install dependencies with legacy peer deps support
+npm install --legacy-peer-deps
 ```
 
 ### 🌐 2. Install Playwright Browsers
