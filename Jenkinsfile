@@ -47,8 +47,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing node modules via npm ci...'
-                // npm ci is faster and cleaner for CI environments
-                sh 'npm ci'
+                // Use --legacy-peer-deps to bypass strict peer dependency version checks (e.g. allure-playwright matching older Playwright versions)
+                sh 'npm ci --legacy-peer-deps'
             }
         }
 
