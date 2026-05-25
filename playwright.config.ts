@@ -43,5 +43,13 @@ export default defineConfig({
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
     // },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop WebKit'] },
+    // },
+    // {
+    //   name: 'chrome-mobile',
+    //   use: { ...devices['Pixel 5'] },
+    // }
   ],
 });
