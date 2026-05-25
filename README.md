@@ -241,3 +241,111 @@ Custom wrappers in `utils/allure.helpers.ts` expose clean functions (`step()`, `
 **Badge edge cases**
 - Badge is not visible when the cart is empty
 - Badge disappears after all items are removed
+
+---
+
+## 🚀 CI/CD & Jenkins Pipeline Automation
+
+This framework is fully equipped with a production-ready, lightweight, and modern **Dockerized Jenkins CI/CD pipeline** designed to run tests automatically on code push and generate beautiful interactive **Allure Reports**.
+
+### 🛠️ Architecture Overview
+
+```mermaid
+graph TD
+    Developer[Developer Push] -->|Webhook Trigger| GitHub[GitHub Repository]
+    GitHub -->|SCM Hook| JenkinsController[Jenkins Controller Container]
+    JenkinsController -->|Docker Socket| PlaywrightAgent[Playwright Node/Linux Agent]
+    PlaywrightAgent -->|npm ci| RunTests[Execute Playwright Tests]
+    RunTests -->|Generate allure-results| AllureGen[Generate Allure 3 HTML Report]
+    AllureGen -->|Archive & Publish| JenkinsController
+```
+
+---
+
+### 📦 1. Required Jenkins Plugins
+
+For the pipeline to execute seamlessly, ensure the following plugins are installed via **Manage Jenkins** ➔ **Plugins** ➔ **Available Plugins**:
+
+1. **Docker Pipeline Plugin** (`docker-workflow`): Allows Jenkins to spin up the official Microsoft Playwright container dynamically.
+2. **Allure Jenkins Plugin** (`allure-jenkins-plugin`): Aggregates test runs, builds status history graphs, and displays interactive Allure 3 dashboards in the Jenkins UI.
+3. **GitHub Integration Plugin** (`github`): Listens for GitHub webhook push notifications to auto-trigger the pipeline.
+
+---
+
+### 🚀 2. Spin Up Jenkins in 1-Click
+
+A pre-configured `docker-compose.yml` and `Dockerfile.jenkins` are provided. Jenkins is set up to run with **Docker-outside-of-Docker (DooD)** capabilities so it can orchestrate Playwright container agents.
+
+#### Start the Jenkins Server
+Run the following command from the root directory:
+```bash
+docker compose up -d --build
+```
+
+#### Access Jenkins
+- **URL**: `http://localhost:8080`
+- **Initial Admin Password**: Retrieve the password from the logs using:
+  ```bash
+  docker logs jenkins-ci 2>&1 | grep -A 2 "Please use the following password"
+  ```
+  *(Alternatively, read it directly from the volume)*:
+  ```bash
+  docker exec jenkins-ci cat /var/jenkins_home/secrets/initialAdminPassword
+  ```
+
+---
+
+### ⛓️ 3. Pipeline Configuration Steps
+
+1. **Create the Pipeline Job**:
+   - Go to **New Item**, enter `saucedemo-qa-pipeline`, select **Pipeline**, and click **OK**.
+2. **Configure General Settings**:
+   - Under **Build Triggers**, check **GitHub hook trigger for GITScm polling**.
+3. **Configure Pipeline Definition**:
+   - In the **Pipeline** section:
+     - **Definition**: Select **Pipeline script from SCM**.
+     - **SCM**: Select **Git**.
+     - **Repository URL**: `https://github.com/ChaudharyVishal007/saucedemo-playwright.git` (or your fork).
+     - **Branch Specifier**: `*/qa` (or matching your branch).
+     - **Script Path**: `Jenkinsfile`
+4. **Save and Run**: Click **Save**.
+
+---
+
+### 🔗 4. GitHub Webhook Setup Steps
+
+To enable automatic execution whenever code is pushed:
+
+1. Go to your **GitHub Repository** ➔ **Settings** ➔ **Webhooks** ➔ **Add webhook**.
+2. **Payload URL**: `http://<your-public-jenkins-ip>:8080/github-webhook/`
+   > [!NOTE]
+   > For local testing, use a tunneling tool like **ngrok** or **localtunnel** to expose your local port `8080` (e.g., `ngrok http 8080`).
+3. **Content type**: `application/json`
+4. **Which events**: Select **Just the push event**.
+5. Click **Add webhook**.
+
+---
+
+### 📊 5. Allure Report Integration
+
+The `Jenkinsfile` automatically manages report building. If you have the **Allure Jenkins Plugin** installed:
+1. Go to **Manage Jenkins** ➔ **Tools** ➔ **Allure Report installations...**
+2. Name it **Allure** (matching the default, or keep it automatic).
+3. Under **Install automatically**, select **Install from Maven Central** (choose the latest 2.x version as it generates all Allure formats flawlessly).
+4. The pipeline will automatically compile test outcomes into a stunning interactive widget accessible directly from the build's sidebar menu!
+
+---
+
+### 🔍 6. Setup Verification
+
+To manually verify the pipeline and environment without waiting for a webhook:
+1. Open `http://localhost:8080` in your browser.
+2. Navigate to your job (`saucedemo-qa-pipeline`).
+3. Click **Build Now** to trigger the build manually.
+4. Monitor progress via **Console Output** to verify:
+   - Code is checked out.
+   - The Playwright noble Docker image is pulled.
+   - Dependencies are installed using `npm ci`.
+   - Tests execute successfully inside the container.
+   - The Allure report is generated and archived as a build artifact.
+
