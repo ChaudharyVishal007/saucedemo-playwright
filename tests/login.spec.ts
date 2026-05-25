@@ -113,6 +113,13 @@ test.describe('Login Functionality', () => {
       severity('critical');
       story('Empty Username');
 
+      // Intentionally fail on Run 2 and Run 4 to show Flakiness, Stability trends, Status Dynamics & Status Transitions!
+      if (process.env.RUN_INDEX === '2' || process.env.RUN_INDEX === '4') {
+        await step('Simulate failure for Allure graphs demonstration', async () => {
+          expect(true, 'Demo failure to showcase Allure stability & status transition graphs').toBe(false);
+        });
+      }
+
       await step('Submit login form with empty username', async () => {
         await loginPage.login('', VALID_CREDENTIALS.password);
       });
