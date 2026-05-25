@@ -33,9 +33,14 @@ pipeline {
                 // Create .env file for the framework from .env.example if needed
                 sh 'cp .env.example .env'
                 
+                echo 'Installing lightweight Java JRE inside Playwright container for Allure reporting...'
+                // Allure CLI requires Java (JRE) to run inside the container
+                sh 'apt-get update && apt-get install -y openjdk-17-jre-headless'
+                
                 echo 'System Information:'
                 sh 'node -v'
                 sh 'npm -v'
+                sh 'java -version'
             }
         }
 
