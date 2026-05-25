@@ -280,10 +280,29 @@ docker compose up -d --build
 4.  **Save**: Click **Save**.
 
 ### 🔗 4. GitHub Webhook Setup Steps
+
+To trigger the pipeline automatically in real-time on code push:
+
 1.  Go to your **GitHub Repository** ➔ **Settings** ➔ **Webhooks** ➔ **Add webhook**.
-2.  **Payload URL**: `http://<your-public-jenkins-ip>:8080/github-webhook/`
+2.  **Payload URL**: Enter your public Jenkins URL followed by `/github-webhook/` (e.g., `https://<your-public-url>/github-webhook/`).
+    
+    > [!TIP]
+    > **Local Testing (Zero-Signup Webhooks)**:
+    > Since GitHub cannot access `localhost`, use one of these completely free, login-free tunneling tools to expose your local port `8080`:
+    > * **Option A — `localtunnel` (Requires Node.js)**:
+    >   ```bash
+    >   npx localtunnel --port 8080
+    >   ```
+    > * **Option B — `pinggy` (Zero installation, uses SSH)**:
+    >   ```bash
+    >   ssh -R 80:localhost:8080 free.pinggy.io
+    >   ```
+    > Copy the generated public URL from your terminal and use it as your Payload URL (e.g., `https://slimy-frogs-jump.loca.lt/github-webhook/`).
+    
     > [!NOTE]
-    > For local testing, use a tunneling tool like **ngrok** to expose your local port `8080` to the internet (e.g. `ngrok http 8080`).
+    > **Alternative: SCM Polling (No Internet exposure needed!)**:
+    > If you do not want to expose your local port to the internet, configure SCM Polling in Jenkins. Check **Poll SCM** under **Build Triggers** in your Jenkins Pipeline, and enter `* * * * *` as the Schedule to scan GitHub for updates every minute.
+
 3.  **Content type**: `application/json`
 4.  **Which events**: Select **Just the push event**.
 5.  Click **Add webhook**.
