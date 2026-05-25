@@ -141,8 +141,6 @@ The framework completely avoids sleep statements like `waitForTimeout()`. Instea
 
 ```
 saucedemo-playwright/
-├── .github/workflows/
-│   └── playwright.yml         # CI/CD GitHub Actions Workflow
 ├── config/
 │   └── env.config.ts          # Central environment config
 ├── pages/                     # Page Object Model Layer
