@@ -1,0 +1,28 @@
+{
+  "name": "saucedemo-qa-automation",
+  "version": "1.0.0",
+  "description": "Playwright + Allure QA Automation Framework for SauceDemo",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:regression": "npx playwright test --grep @regression",
+    "test:login": "npx playwright test tests/login.spec.ts",
+    "test:cart": "npx playwright test tests/cart.spec.ts",
+    "test:headed": "npx playwright test --headed",
+    "test:ci": "npx playwright test --reporter=allure-playwright",
+    "test:history": "bash scripts/run-with-history.sh",
+    "test:history:runs": "bash scripts/run-with-history.sh",
+    "allure:generate": "rm -rf allure-report && npx allure generate ./allure-results -o allure-report --report-name \"SauceDemo QA Suite\"",
+    "allure:open": "npx allure open allure-report",
+    "allure:serve": "npx allure serve ./allure-results --report-name \"SauceDemo QA Suite\"",
+    "report": "npm run allure:generate && npm run allure:open",
+    "playwright:install": "npx playwright install --with-deps chromium firefox"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^25.9.1",
+    "allure": "^3.8.2",
+    "allure-playwright": "^3.9.0",
+    "dotenv": "^16.4.7"
+  }
+}
