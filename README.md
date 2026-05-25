@@ -308,10 +308,16 @@ To trigger the pipeline automatically in real-time on code push:
 5.  Click **Add webhook**.
 
 ### 📊 5. Allure Report Integration in Jenkins
-1.  Go to **Manage Jenkins** ➔ **Tools** ➔ **Allure Report installations...**
-2.  Name it **Allure** (matching the default, or keep it automatic).
-3.  Under **Install automatically**, select **Install from Maven Central** (choose the latest 2.x version).
-4.  The pipeline will automatically compile test outcomes into a stunning interactive widget accessible directly from the build's sidebar menu!
+
+> [!IMPORTANT]
+> **Prerequisite**: You must install the **Allure Jenkins Plugin** first (under **Manage Jenkins** ➔ **Plugins** ➔ **Available Plugins**) before the **Allure Report installations** option will show up in the Tools menu!
+
+Once the plugin is installed:
+1.  Go to **Manage Jenkins** ➔ **Tools** (scroll down to **Allure Report installations...**).
+2.  Click **Add Allure Report**.
+3.  Name it **Allure** (the `Jenkinsfile` refers to this specific name).
+4.  Under **Install automatically**, select **Install from Maven Central** and choose the latest version (e.g., `2.29.0` or latest 2.x).
+5.  Click **Save**. The pipeline will now build stunning report widgets directly in the build sidebar!
 
 ### 🔍 6. Manual Setup Verification
 To manually test the pipeline without waiting for a commit push:
