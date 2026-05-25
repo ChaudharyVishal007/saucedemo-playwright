@@ -19,7 +19,7 @@
     "playwright:install": "npx playwright install --with-deps chromium firefox"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "1.49.1",
     "@types/node": "^25.9.1",
     "allure": "^3.8.2",
     "allure-playwright": "^3.9.0",
